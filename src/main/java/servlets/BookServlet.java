@@ -25,11 +25,9 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String isbn = request.getParameter("isbn");
+        Book book = new Gson().fromJson(request.getReader(), Book.class);
 
-        if (name != null && isbn != null) {
-            Book book = new Book(name, isbn);
+      if(book!=null){
             BookService.addBook(book);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } else {

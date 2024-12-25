@@ -3,8 +3,9 @@
 <head>
     <title>Book Management System</title>
     <script>
+    let url="http://localhost:8080/BMS"
         function loadBooks() {
-            fetch('/books')
+            fetch(url+'/books')
                 .then(response => response.json())
                 .then(data => {
                     let bookList = document.getElementById('bookList');
@@ -21,11 +22,16 @@
         function addBook() {
             let name = document.getElementById('bookName').value;
             let isbn = document.getElementById('bookIsbn').value;
+            let requestData={
+                name:name,
+                isbn:isbn
+            }
+
             if (name && isbn) {
-                fetch('/books', {
+                fetch(url+'/books', {
                     method: 'POST',
-                    body: new URLSearchParams({ name: name, isbn: isbn }),
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    body: JSON.stringify(requestData),
+                    headers: { 'Content-Type': 'application/json' }
                 })
                     .then(() => {
                         loadBooks();
@@ -41,7 +47,7 @@
         function deleteBook() {
             let isbn = document.getElementById('deleteIsbn').value;
             if (isbn) {
-                fetch("/books?isbn="+isbn, { method: 'DELETE' })
+                fetch(url+"/books?isbn="+isbn, { method: 'DELETE' })
                     .then(() => {
                         loadBooks();
                         document.getElementById('deleteIsbn').value = '';
@@ -56,7 +62,7 @@
             let isbn = document.getElementById('updateIsbn').value;
             let name = document.getElementById('updateName').value;
             if (isbn && name) {
-                fetch("/books?isbn="+isbn+"&name="+name, { method: 'PUT' })
+                fetch(url+"/books?isbn="+isbn+"&name="+name, { method: 'PUT' })
                     .then(() => {
                         loadBooks();
                         document.getElementById('updateIsbn').value = '';
