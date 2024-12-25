@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Book Management API
+  description: API to manage books in the system (add, update, delete, and retrieve books).
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server for development
+
+paths:
+  /books:
+    get:
+      summary: Retrieve all books
+      description: Fetches a list of all books in the system.
+      operationId: getBooks
+      tags:
+        - Books
+      responses:
+        '200':
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '500':
+          description: Server error
+
+    post:
+      summary: Add a new book
+      description: Adds a new book to the system.
+      operationId: addBook
+      tags:
+        - Books
+      requestBody:
+        description: Book data to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the book
+                isbn:
+                  type: string
+                  description: ISBN of the book
+              required:
+                - name
+                - isbn
+      responses:
+        '201':
+          description: Book created successfully
+        '400':
+          description: Bad request (missing required parameters)
+
+    delete:
+      summary: Delete a book
+      description: Deletes a book from the system based on its ISBN.
+      operationId: deleteBook
+      tags:
+        - Books
+      parameters:
+        - name: isbn
+          in: query
+          description: ISBN of the book to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book deleted successfully
+        '400':
+          description: Bad request (ISBN not provided)
+        '404':
+          description: Book not found
+
+    put:
+      summary: Update a book's information
+      description: Updates the name of an existing book based on its ISBN.
+      operationId: updateBook
+      tags:
+        - Books
+      parameters:
+        - name: isbn
+          in: query
+          description: ISBN of the book to update
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: New name for the book
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book updated successfully
+        '400':
+          description: Bad request (missing parameters)
+        '404':
+          description: Book not found
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the book
+        isbn:
+          type: string
+          description: ISBN of the book
+      required:
+        - name
+        - isbn
