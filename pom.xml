@@ -6,7 +6,7 @@
 
     <groupId>com.darse</groupId>
     <artifactId>BMS</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>BMS</name>
     <packaging>war</packaging>
 
@@ -53,5 +53,6 @@
                 <version>3.4.0</version>
             </plugin>
         </plugins>
+         <finalName>BMS</finalName>
     </build>
 </project>
